@@ -179,10 +179,10 @@ class DataLoader:
         @rtype: None
         """
         # the label is this column
-        label = "diagnosed_leuk"
+        label = "ALD"
         # DD are bigger than 84 and LD smaller
-        self.data.loc[self.data[label] < 84, label] = 0
-        self.data.loc[self.data[label] >= 84, label] = 1
+        self.data.loc[self.data[label] != 2, label] = 0
+        self.data.loc[self.data[label] == 2, label] = 1
 
     def calculate_age_at_visit(self) -> None:
         """
