@@ -5,15 +5,15 @@ class TrainConfig:
         # PHT medic paths
         self.DATA_PATH = "/opt/train_data"
         self.RESULT_PATH = "/opt/pht_results"
-        self.SHARED_COLUMNS = "/opt/pht_train/train_training_framwork/train_configuration_files/shared_columns.csv"
-        self.ANAL_COLUMNS = "/opt/pht_train/train_training_framwork/train_configuration_files/analysis_columns.csv"
-        self.ANAL_META = "/opt/pht_train/train_training_framwork/train_configuration_files/meta_data_analysis.csv"
+        self.SHARED_COLUMNS = "/opt/pht_train/Modell-training-train/train_configuration_files/shared_columns.csv"
+        self.ANAL_COLUMNS = "/opt/pht_train/Modell-training-train/train_configuration_files/analysis_columns.csv"
+        self.ANAL_META = "/opt/pht_train/Modell-training-train/train_configuration_files/meta_data_analysis.csv"
 
         # PHT medic environment variable
         self.PHT_MEDIC = self.is_pht_medic()
 
         self.redcap_address, self.redcap_key, self.station_name, self.file_load_data, self.file_load_metadata = self.data_access()
-        self.DATA_SPLIT_PATH = f"/opt/pht_train/train_training_framwork/train_configuration_files/{self.station_name}_data_split.csv"
+        self.DATA_SPLIT_PATH = f"/opt/pht_train/Modell-training-train/train_configuration_files/{self.station_name}_data_split.csv"
         self.MODEL_PATH = "/opt/pht_results/model"
         self.IMAGE_PATH = "/opt/pht_results/image"
         self.create_path(self.get_image_path())
