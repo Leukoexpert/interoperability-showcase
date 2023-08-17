@@ -15,6 +15,7 @@ class TrainConfig:
         self.redcap_address, self.redcap_key, self.station_name, self.file_load_data, self.file_load_metadata = self.data_access()
         self.DATA_SPLIT_PATH = f"/opt/pht_train/Modell-training-train/train_configuration_files/{self.station_name}_data_split.csv"
         self.MODEL_PATH = "/opt/pht_results/model"
+        self.STATION_MODEL_PATH = f"/opt/pht_results/model_{self.station_name}"
         self.IMAGE_PATH = "/opt/pht_results/image"
         self.create_path(self.get_image_path())
         self.create_path(self.MODEL_PATH)
@@ -81,6 +82,9 @@ class TrainConfig:
 
     def get_model_path(self):
         return self.MODEL_PATH
+
+    def get_station_model_path(self):
+        return self.STATION_MODEL_PATH
 
     def get_anal_columns(self):
         return self.ANAL_COLUMNS
