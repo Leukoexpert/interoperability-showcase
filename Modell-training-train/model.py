@@ -9,8 +9,6 @@ import joblib
 from train import TrainConfig
 from model_utils import get_auc
 from model_utils import Model_Loader
-from plotting_utils import ploting_roc_curve, ploting_feature_importance, ploting_tree_visualization, \
-    plotting_confusion_matrix
 from model_utils import get_metrics_binary
 from utils import save_df_to_csv
 
@@ -103,6 +101,8 @@ class Model():
 
     def save_model(self, model, model_path):
         print("save model")
+        if not os.path.exists(model_path):
+            os.mkdir(model_path)
         joblib.dump(model, os.path.join(model_path, "model.joblib"))
 
     def save_roc_curve(self):
