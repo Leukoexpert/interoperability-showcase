@@ -50,3 +50,12 @@ def try_parsing_date(text: str) -> datetime.date:
             return datetime.strptime(text, fmt).date()
         except ValueError:
             pass
+
+def get_all_folders_in_path(path: str) -> list:
+    """
+    get all folders in a path
+    @param path: path to the folder
+    @return: list of folders
+    """
+    folders = [f.path for f in os.scandir(path) if f.is_dir()]
+    return folders

@@ -8,9 +8,9 @@ from sklearn.model_selection import KFold, RandomizedSearchCV
 import joblib
 from train import TrainConfig
 from model_utils import get_auc
-from model_utils import Model_Loader
+from model_utils import ModelLoader
 from model_utils import get_metrics_binary
-from utils import save_df_to_csv
+from utils import save_df_to_csv, get_all_folders_in_path
 
 
 class Model():
@@ -21,6 +21,7 @@ class Model():
         self.test_data = test_data
         self.test_label = test_label
         self.train_config = train_config
+        self.model_loader = ModelLoader(self.train_config)
         self.method = "rf"
 
 
@@ -56,27 +57,35 @@ class Model():
         4. save the evaluation
         :return:
         """
-        # Test station specific model
-        station_spesific_model = self.load_model()
-        station_spesific_evaluation = self.evaluation(self.test_data, self.test_label, station_spesific_model, method=self.method)
-        save_df_to_csv(self.train_config, station_spesific_evaluation, self.train_config.get_station_data_path(), f"{self.train_config.get_station_name()}_spesific_model_evaluation.csv")
 
-        # Test global model
-        model = self.load_model()
-        evaluation = self.evaluation(self.test_data, self.test_label, model, method=self.method)
-        save_df_to_csv(self.train_config, evaluation, self.train_config.get_data_path(), f"{self.train_config.get_station_name()}evaluation.csv")
+        models = get_all_folders_in_path(self.train_config.get_model_testing_path())
+        for model_name in models:
+            model_path = os.path.join(self.train_config.get_model_testing_path(), model_name)
+            model =self.load_model_testing(model_path)
+            evaluation = self.evaluation(self.test_data, self.test_label, model, method=self.method)
+            save_df_to_csv(self.train_config, evaluation, self.train_config.get_result_path(),
+                           f"{model_name}_evaluation.csv")
 
 
 
     def load_model(self):
-        self.model_loader = Model_Loader(self.train_config)
-        self.model_load = self.model_loader.model_in_result_path()
-        if self.model_load:
+        model_load = self.model_loader.model_in_result_path()
+        if model_load:
             model = self.model_loader.load_model()
         else:
             model = self.create_model()
 
         return model
+
+    def load_model_testing(self, model_path = None):
+        self.model_load = self.model_loader.model_in_result_path(model_path)
+        if self.model_load:
+            model = self.model_loader.load_model_testing(model_path)
+        else:
+            print(f"no model found at {model_path}")
+            raise FileNotFoundError
+        return model
+
 
     def prediction(self, model):
         print("prediction")

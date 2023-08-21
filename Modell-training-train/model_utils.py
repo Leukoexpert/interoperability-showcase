@@ -7,17 +7,20 @@ from sklearn.metrics import roc_curve, auc, roc_auc_score, accuracy_score, balan
     matthews_corrcoef
 
 
-class Model_Loader:
+class ModelLoader:
 
     def __init__(self, train_config: Type[TrainConfig]):
         self.train_config = train_config
+        self.model_file_name = "model.joblib"
 
-    def model_in_result_path(self) -> bool:
+    def model_in_result_path(self, model_path = None ) -> bool:
         """
               check if the model is in the model path
               @return: True if the model is in the model path
               """
-        if os.path.exists(os.path.join(self.train_config.get_model_path(), "model.joblib")):
+        if model_path is None:
+            model_path = self.train_config.get_model_path()
+        if os.path.exists(os.path.join(model_path, self.model_file_name)):
             model_load = True
         else:
             model_load = False
@@ -32,12 +35,19 @@ class Model_Loader:
         @return model
         """
         if self.model_in_result_path():
-            model = joblib.load(os.path.join(self.train_config.get_model_path(), "model.joblib"))
+            model = joblib.load(os.path.join(self.train_config.get_model_path(),  self.model_file_name))
             model.set_params(n_estimators= 3+model.n_estimators, warm_start=True)
         else:
             model = None
         return model
 
+    def load_model_testing(self, model_path):
+        if self.model_in_result_path():
+            model = joblib.load(os.path.join(model_path,  self.model_file_name))
+        else:
+            print(f"no model found at {model_path}")
+            raise FileNotFoundError
+        return model
 
 
 def split_data_into_data_target(data: pd.DataFrame, coloumn_name_label: str):
