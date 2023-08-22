@@ -29,7 +29,6 @@ def convert_series_to_datetimes(dates: pd.Series) -> list:
     @param dates: a pandas series with dates
     @return: list of dates in a date type
     """
-    dates = dates
     dates = dates.astype(str)
     dates_list = dates.to_list()
     dates_list_format = []

@@ -21,9 +21,9 @@ def main():
 
     # 2. Load data from redcap / conteiner
     data_loader = DataLoader(train_config)
-    X_train, Y_train = split_data_into_data_target(data_loader.train_data, "diagnosed_leuk")
-    X_test, Y_test = split_data_into_data_target(data_loader.test_data, "diagnosed_leuk")
-    model = Model(train_config, X_train, Y_train, X_test, Y_test)
+    x_train, y_train = split_data_into_data_target(data_loader.train_data, "diagnosed_leuk")
+    x_test, y_test = split_data_into_data_target(data_loader.test_data, "diagnosed_leuk")
+    model = Model(train_config, x_train, y_train, x_test, y_test)
     #model.train_loop()
     model.test_loop()
 

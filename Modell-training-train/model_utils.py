@@ -23,6 +23,7 @@ class ModelLoader:
         if os.path.exists(os.path.join(model_path, self.model_file_name)):
             model_load = True
         else:
+            print(f"{os.path.exists(os.path.join(model_path, self.model_file_name))} dose not exist")
             model_load = False
         return model_load
 
@@ -42,7 +43,7 @@ class ModelLoader:
         return model
 
     def load_model_testing(self, model_path):
-        if self.model_in_result_path():
+        if self.model_in_result_path(model_path):
             model = joblib.load(os.path.join(model_path,  self.model_file_name))
         else:
             print(f"no model found at {model_path}")

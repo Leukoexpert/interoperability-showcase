@@ -62,7 +62,7 @@ class Model():
         for model_name in models:
             model_path = os.path.join(self.train_config.get_model_testing_path(), model_name)
             model =self.load_model_testing(model_path)
-            evaluation = self.evaluation(self.test_data, self.test_label, model, method=self.method)
+            evaluation = self.evaluation(self.test_data, self.test_label, model,self.method)
             save_df_to_csv(self.train_config, evaluation, self.train_config.get_result_path(),
                            f"{model_name}_evaluation.csv")
 
@@ -78,8 +78,8 @@ class Model():
         return model
 
     def load_model_testing(self, model_path = None):
-        self.model_load = self.model_loader.model_in_result_path(model_path)
-        if self.model_load:
+        model_load = self.model_loader.model_in_result_path(model_path)
+        if model_load:
             model = self.model_loader.load_model_testing(model_path)
         else:
             print(f"no model found at {model_path}")
