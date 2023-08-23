@@ -20,8 +20,9 @@ def save_df_to_csv(train_config: Type[TrainConfig], df: pd.DataFrame, result_sub
         os.makedirs(train_config.get_result_path())
     if not os.path.exists(os.path.join(train_config.get_result_path(), result_subfolder)):
         os.makedirs(os.path.join(train_config.get_result_path(), result_subfolder))
-    df.to_csv(os.path.join(train_config.get_result_path(), result_subfolder, name), mode="a")
-
+    print(os.path.join("/opt/pht_results", name))
+    #df.to_csv(os.path.join(train_config.get_result_path(), name), mode="a")
+    df.to_csv(os.path.join("/opt/pht_results", name), mode="a")
 
 def convert_series_to_datetimes(dates: pd.Series) -> list:
     """

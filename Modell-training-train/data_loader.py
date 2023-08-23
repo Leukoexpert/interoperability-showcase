@@ -87,8 +87,8 @@ class DataLoader:
         save_df_to_csv(self.train_config, df=shorten_df.apply(lambda x: x.value_counts()),result_subfolder=self.train_config.get_station_name(), name="typisation_whole_df.csv")
         shorten_df_binary = self.data.drop(columns=["age"])
         label = "diagnosed_leuk"
-        shorten_df_binary.loc[shorten_df_binary[label] < 84 , label] = 0
-        shorten_df_binary.loc[shorten_df_binary[label] >= 84, label] = 1
+        shorten_df_binary.loc[shorten_df_binary[label] != 2 , label] = 0
+        shorten_df_binary.loc[shorten_df_binary[label] == 2, label] = 1
         index = []
         group = []
         value = []

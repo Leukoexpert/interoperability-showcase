@@ -63,8 +63,13 @@ class Model():
             model_path = os.path.join(self.train_config.get_model_testing_path(), model_name)
             model =self.load_model_testing(model_path)
             evaluation = self.evaluation(self.test_data, self.test_label, model,self.method)
-            save_df_to_csv(self.train_config, evaluation, self.train_config.get_result_path(),
-                           f"{model_name}_evaluation.csv")
+            model_name = model_name.split("/")[-1]
+            print(os.path.join("/opt/pht_results", f"{self.train_config.get_station_name()}_{model_name}_evaluation.csv"))
+
+            evaluation.to_csv(os.path.join("/opt/pht_results", f"{self.train_config.get_station_name()}_{model_name}_evaluation.csv"), mode="a")
+            #save_df_to_csv(self.train_config, evaluation,
+            #               f"evaluation_{self.train_config.get_station_name()}",
+            #               f"{model_name}_evaluation.csv")
 
 
 
@@ -129,11 +134,6 @@ class Model():
             prediction = prediction[:, 1]
         eval_df = get_metrics_binary(prediction, test_label, method=method, threshold=0.2)
         return eval_df
-
-    def evaluation(self):
-       print("evaluation")
-       eval_df = get_metrics_binary(self.prediction, self.test_label, method="rf", threshold=0.2)
-       save_df_to_csv(self.train_config, eval_df, self.train_config.get_data_path(), "eval_df.csv")
 
     def evaluation_aggregation(self, eval_dfs):
         print("evaluation aggregation")
