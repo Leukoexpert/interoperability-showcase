@@ -67,9 +67,6 @@ class Model():
             print(os.path.join("/opt/pht_results", f"{self.train_config.get_station_name()}_{model_name}_evaluation.csv"))
 
             evaluation.to_csv(os.path.join("/opt/pht_results", f"{self.train_config.get_station_name()}_{model_name}_evaluation.csv"), mode="a")
-            #save_df_to_csv(self.train_config, evaluation,
-            #               f"evaluation_{self.train_config.get_station_name()}",
-            #               f"{model_name}_evaluation.csv")
 
 
 
