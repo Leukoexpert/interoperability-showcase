@@ -353,7 +353,7 @@ def convert_series_to_datetimes(colname: str, data: pd.DataFrame):
     return df
 
 
-def save_hist_plot(output_path: str, parameter: list, label_x: str) -> None:
+def save_hist_plot(output_path: str, parameter: list, label_x: str, n) -> None:
     """
 
     :param output_path: path to save the images
@@ -368,7 +368,7 @@ def save_hist_plot(output_path: str, parameter: list, label_x: str) -> None:
     plt.rcParams.update({'figure.figsize': (7, 6), 'figure.dpi': 100})
     plt.hist(parameter, bins=k_anyme_bins(parameter,5), edgecolor='black', linewidth=1.2)
 
-    plt.gca().set(title='Frequency of {} (n={})'.format(label_x, len(parameter)), ylabel='Frequency',
+    plt.gca().set(title='Frequency of {} (n={})'.format(label_x, n), ylabel='Frequency',
                   xlabel=label_x)
     plt.subplots_adjust(top=0.925,
                         bottom=0.2,

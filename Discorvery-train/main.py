@@ -94,7 +94,9 @@ baseline_df["record_id"] = list(id_baseline)
 
 number_of_records = len(baseline_df)
 
-sex_series = baseline_df['sex'].dropna()
+sex_series = baseline_df['sex']
+
+sex_series = sex_series.dropna()
 
 table_sex = sex_series.value_counts()
 
@@ -160,7 +162,7 @@ age = [0 if i <= 0 else i for i in age]
 
 age_file_path = os.path.join(image_path, 'age_diagnosis_hist_plot.png')
 
-save_hist_plot(output_path=age_file_path, parameter=age, label_x="age at diagnosis")
+save_hist_plot(output_path=age_file_path, parameter=age, label_x="age at diagnosis", n=len(sex_series))
 
 # genetic data extraction
 
@@ -182,7 +184,7 @@ if not genetic_df.empty:
     genetic_df = genetic_df[gen_col.notna()]
     number_of_genetic_masks = len(genetic_df)
 
-    gen_transformation_dict = {'ABCD1': 'ABCD1', 'CSF1R': 'CSF1R', 'ARSA-Gen': 'ARSA', 'CSF1 Receptor': 'CSF1R',
+    gen_transformation_dict = {'ABCD1': 'ABCD1', 'ARSA-Gen': 'ARSA',
                                'Notch3': 'NOTCH3', 'ABCD1-Gen': 'ABCD1', 'ARSA': 'ARSA', 'NOTCH3': 'NOTCH3',
                                'GFAP': 'GFAP', 'GALC': 'GALC', 'GBE1': 'GBE1', 'LMNB1': 'LMNB1', 'POLR3B': 'POLR3B',
                                'CST3': 'CST3', 'SPG11': 'SPG11', 'HTRA1': 'HTRA1', 'COL4A1': 'COL4A1', 'GLA': 'GLA',
@@ -190,7 +192,7 @@ if not genetic_df.empty:
                                'PHYH': 'PHYH',
                                'EPRS1': 'EPRS1', 'EIF2B1': 'EIF2B1', 'AARS2': 'AARS2', 'ARSA ': 'ARSA',
                                'eiF2B4': 'eiF2B4',
-                               'POLR3B-Gen': 'POLR3B', 'CSF1R-Gen': 'CSF1R', 'CSFR1': 'CSF1R', 'CYP27A1': 'CYP27A1'}
+                               'POLR3B-Gen': 'POLR3B', 'CYP27A1': 'CYP27A1'}
 
     affected_genes = genetic_df['affected_gene']
     affected_genes = affected_genes[affected_genes.notna()]
