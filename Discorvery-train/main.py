@@ -1,7 +1,9 @@
+import os
+os.environ['OPENBLAS_NUM_THREADS'] = '1'
 # LEUKO Overview train RedCAP
 import os
 
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
@@ -12,7 +14,7 @@ DATA_PATH = "/opt/train_data"
 RESULT_PATH = "/opt/pht_results"
 
 # set plot font size
-plt.rcParams.update({'font.size': 15})
+#plt.rcParams.update({'font.size': 15})
 
 if os.environ.get('REDCAP_ADDRESS') is None:
     PHT_MEDIC = True
@@ -211,7 +213,7 @@ if not genetic_df.empty:
     df = pd.DataFrame({'Affected genes': table_genes_index, 'Number of patients': table_genes_list})
     df.to_csv(os.path.join(image_path, 'genetic_data.csv'), index=False)
 
-    # broken axis tutorial: https://matplotlib.org/stable/gallery/subplots_axes_and_figures/broken_axis.html
+    """# broken axis tutorial: https://matplotlib.org/stable/gallery/subplots_axes_and_figures/broken_axis.html
     plt.rcParams.update({'font.size': 13})
     fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
     fig.subplots_adjust(hspace=0.05)  # adjust space between axes
@@ -240,7 +242,7 @@ if not genetic_df.empty:
     ax2.plot([0, 1], [1, 1], transform=ax2.transAxes, **kwargs)
     plt.xticks(rotation=45, ha='right')
     plt.subplots_adjust(bottom=0.4)
-    plt.savefig(genetic_file_path)
+    plt.savefig(genetic_file_path)"""
 else:
     print("No genes found")
     table_genes = []
@@ -274,7 +276,7 @@ if not mri_df.empty:
     # save number_of_visits and patients_list to a csv file
     df = pd.DataFrame({'Number of visits': number_of_visits, 'Number of patients': patients_list})
     df.to_csv(os.path.join(image_path, 'mri_data.csv'), index=False)
-
+    """
     mri_file_path = os.path.join(image_path, "mri_data_plot.png")
     plt.rcParams.update({'font.size': 15})
     plt.figure(figsize=(10, 5))
@@ -289,10 +291,11 @@ if not mri_df.empty:
                         hspace=0.01,
                         wspace=0.01)
     plt.savefig(mri_file_path)
-
+    """
 else:
     print("--- No MRI data found ---")
-    mri_file_path = os.path.join(image_path, "mri_data_plot.png")
+
+    #mri_file_path = os.path.join(image_path, "mri_data_plot.png")
 
 # examination chapter
 print("Start with the Examination section")
@@ -328,6 +331,7 @@ if not examination_df.empty:
     # save number_of_visits and patients_list to a csv file
     df = pd.DataFrame({'Number of visits': number_of_visits, 'Number of patients': patients_list})
     df.to_csv(os.path.join(image_path, 'exam_data.csv'), index=False)
+    """
     plt.figure(figsize=(10, 5))
     plt.bar(number_of_visits, patients_list, color='maroon', width=0.4)
     plt.xlabel("Number of Visits")
@@ -339,9 +343,10 @@ if not examination_df.empty:
                         hspace=0.01,
                         wspace=0.01)
     plt.savefig(exam_file_path)
+    """
 else:
     print("no examination found")
-    exam_file_path = os.path.join(image_path, "exam_data_plot.png")
+    #exam_file_path = os.path.join(image_path, "exam_data_plot.png")
 
 # Overview plot
 
@@ -398,7 +403,7 @@ table_generel_names = ['Baseline', 'Examination', 'MRI', 'Genetics']
 # save tabel_generel to csv
 table_generel_df = pd.DataFrame(table_generel, index=table_generel_names, columns=["Number of Patients"])
 table_generel_df.to_csv(os.path.join(image_path, "overview_accumulated.csv"))
-
+"""
 overview_accumulated_file_path = os.path.join(image_path, "Overview_question_accumulated.png")
 
 plt.figure(figsize=(10, 10))
@@ -412,7 +417,7 @@ plt.subplots_adjust(top=0.925,
                     hspace=0.01,
                     wspace=0.01)
 plt.savefig(overview_accumulated_file_path)
-
+"""
 table_names = []
 
 table_dict = {'nonono': 'Only Baseline', 'nonoyes': 'Baseline&Genetics', 'noyesno': 'Baseline&MRI',
@@ -426,6 +431,7 @@ for row in table_masks.index:
 
 overview_file_path = os.path.join(image_path, "Overview_mask.png")
 overview_file_path_pdf = os.path.join(image_path, "Overview_mask.pdf")
+"""
 plt.figure(figsize=(10, 10))
 plt.bar(table_names, table_masks, color='maroon', width=0.5)
 plt.ylabel("Number of Patients")
@@ -438,7 +444,7 @@ plt.subplots_adjust(top=0.925,
                     wspace=0.01)
 plt.savefig(overview_file_path)
 plt.savefig(overview_file_path_pdf)
-
+"""
 print("Data processing complete")
 
 print("---------------------------------------------------")
@@ -446,12 +452,12 @@ print("---------------------------------------------------")
 # generate the PDF
 print("Creating the PDF .....")
 output_path = os.path.join(image_path, "Leuko-Expert_Report_{}.pdf")
-create_pdf(station_name=station_name, number_of_patients=number_of_records, number_of_mris=number_of_mri,
+"""create_pdf(station_name=station_name, number_of_patients=number_of_records, number_of_mris=number_of_mri,
            number_of_examinations=number_of_examinations, number_of_genetic=len(genetic_index),
            number_of_diagnosis=number_diagnosis, table_sex=table_sex, table_examination=table_examination_times,
            table_diagnosis=tabele_diagnosis, output_path=output_path.format(station_name),
            hist_plot_path=age_file_path, exam_plot_path=exam_file_path,
            overview_accumulated_plot_path=overview_accumulated_file_path,
            mri_plot_path=mri_file_path, genetic_plot_path=genetic_file_path, overview_plot_path=overview_file_path)
-
+"""
 print("Generation Complete")

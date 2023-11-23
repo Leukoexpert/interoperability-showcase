@@ -3,7 +3,7 @@ import os.path
 import requests
 import pandas as pd
 import numpy as np
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
 from redcap import Project
 from fpdf import FPDF
 from datetime import datetime
@@ -364,7 +364,7 @@ def save_hist_plot(output_path: str, parameter: list, label_x: str, n) -> None:
     hist = np.histogram(parameter, bins=k_anyme_bins(parameter,5))
     hist_df = pd.DataFrame(list(zip(hist[1][:-1], hist[1][1:], hist[0])), columns=['left', 'right', 'count'])
     hist_df.to_csv(output_path.replace('.png', '.csv'), index=False)
-    plt.figure(0)
+    """plt.figure(0)
     plt.rcParams.update({'figure.figsize': (7, 6), 'figure.dpi': 100})
     plt.hist(parameter, bins=k_anyme_bins(parameter,5), edgecolor='black', linewidth=1.2)
 
@@ -376,7 +376,7 @@ def save_hist_plot(output_path: str, parameter: list, label_x: str, n) -> None:
                         right=0.90,
                         hspace=0.01,
                         wspace=0.01)
-    plt.savefig(output_path)
+    plt.savefig(output_path)"""
 
 
 def k_anyme_bins(parameters: list, k: int = 5) -> list:
