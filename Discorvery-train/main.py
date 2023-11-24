@@ -65,7 +65,7 @@ if file_load:
     metadata = load_redcap_metadata_from_file(file_load_metadata)
 else:
     print("Continue without File loader")
-    print("REDCap Address: " + redcap_address)
+    #print("REDCap Address: " + redcap_address)
     # read the data from redcap system from
     data = export_to_redcap_via_pycap(api_url=redcap_address, api_key=redcap_key)
     # export the metadata from the redcap system
