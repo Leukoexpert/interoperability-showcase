@@ -143,6 +143,7 @@ else:
 
 dod_df = convert_series_to_datetimes('fcl', baseline_df)
 dob_df = convert_series_to_datetimes('dob', baseline_df)
+print(dob_df)
 
 # merge the two lists
 records_first_exam = []
@@ -157,8 +158,10 @@ doe_first_df = pd.DataFrame(list(zip(records_first_exam, date_diagnosis)),
 
 final_df = pd.merge(dob_df, doe_first_df, how='inner', on='record_id')
 
+final_df = final_df.dropna()
+
 age = [final_df['date_diagnosis'][patient].year - final_df['dob'][patient].year for patient in
-       range(0, len(final_df['dob']))]
+       final_df.index]
 
 age = [0 if i <= 0 else i for i in age]
 
