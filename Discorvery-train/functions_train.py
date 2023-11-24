@@ -690,6 +690,13 @@ True, station: str = None) -> pd.DataFrame:
         end_field_name = metadata_instrument.index[-2]
     else:
         end_field_name = metadata_instrument.index[-1]
+    if instrument == 'mri' and station is "Aachen":
+        end_field_name = metadata_instrument.index[-2]
+        start_field_name = metadata_instrument.index[1]
+    elif instrument == 'mri' and station is not "Aachen":
+        end_field_name = metadata_instrument.index[-2]
+    else:
+        end_field_name = metadata_instrument.index[-1]
     rows = redcap_data["redcap_repeat_instrument"] == redcap_event_name
     # add 1 to the end position to cover the complete_instrument column
     end_field_number = np.where(redcap_data.columns == end_field_name)
