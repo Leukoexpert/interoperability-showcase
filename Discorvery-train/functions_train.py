@@ -331,13 +331,18 @@ def get_instruments_from_redcap_data(redcap_data: pd.DataFrame, instruments: lis
     return redcap_data_selected
 
 
-def try_parsing_date(text):
-    for fmt in ('%Y-%m-%d', '%m-%Y', '%y', '%Y-%m-%d', '%m.%Y', '%m/%y', '%m/%Y', '%Y', '%Y.%w', '00-%Y'):
+def try_parsing_date(text: str) -> datetime.date:
+    """
+    convert a str to a date time if the dateformates matches if not than None
+    @param text: str with a date
+    @return: date
+    """
+    # if you find another date in your dataset then use the formatting given bei datetime to insert it
+    for fmt in ('%Y-%m-%d', '%m-%Y', '%y', '%m.%Y', '%m/%y', '%m/%Y', '%Y', '%Y.%w', '00-%Y', '-%y'):
         try:
             return datetime.strptime(text, fmt).date()
         except ValueError:
             pass
-    raise ValueError('no valid date format found')
 
 
 def convert_series_to_datetimes(colname: str, data: pd.DataFrame):
