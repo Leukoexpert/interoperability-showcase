@@ -683,20 +683,28 @@ True, station: str = None) -> pd.DataFrame:
     else:
         redcap_event_name = "basic_data_consent"
 
-    if instrument == 'mri' and station is "Tuebingen":
+    if instrument == 'mri' and ((station is "Tuebingen") or (station is "Aachen")):
         end_field_name = metadata_instrument.index[-2]
-        start_field_name = metadata_instrument.index[1]
-    elif instrument == 'mri' and station is not "Tuebingen":
+        start_field_name = "dor"
+        print(f" station {station} {instrument} {start_field_name} {end_field_name}")
+
+    elif instrument == 'mri' and ((station is not "Tuebingen")( station is not "Aachen")):
         end_field_name = metadata_instrument.index[-2]
+        print(f" station {station} {instrument} {start_field_name} {end_field_name}")
     else:
         end_field_name = metadata_instrument.index[-1]
-    if instrument == 'mri' and station is "Aachen":
-        end_field_name = metadata_instrument.index[-2]
-        start_field_name = metadata_instrument.index[1]
-    elif instrument == 'mri' and station is not "Aachen":
-        end_field_name = metadata_instrument.index[-2]
-    else:
-        end_field_name = metadata_instrument.index[-1]
+        print(f" station {station} {instrument} {start_field_name} {end_field_name}")
+
+
+    #if instrument == 'mri' and station is "Aachen":
+    #    end_field_name = metadata_instrument.index[-2]
+    #    start_field_name = metadata_instrument.index[1]
+    #elif instrument == 'mri' and station is not "Aachen":
+    #    end_field_name = metadata_instrument.index[-2]
+    #else:
+    #    end_field_name = metadata_instrument.index[-1]
+
+
     rows = redcap_data["redcap_repeat_instrument"] == redcap_event_name
     # add 1 to the end position to cover the complete_instrument column
     end_field_number = np.where(redcap_data.columns == end_field_name)
