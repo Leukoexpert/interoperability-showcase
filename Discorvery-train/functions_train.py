@@ -683,17 +683,17 @@ True, station: str = None) -> pd.DataFrame:
     else:
         redcap_event_name = "basic_data_consent"
 
-    if instrument == 'mri' and ((station is "Tuebingen") or (station is "Aachen")):
-        end_field_name = metadata_instrument.index[-2]
-        start_field_name = "dor"
-        print(f" station {station} {instrument} {start_field_name} {end_field_name}")
+    #if instrument == 'mri' and ((station is "Tuebingen") or (station is "Aachen")):
+    #    end_field_name = metadata_instrument.index[-2]
+    #    start_field_name = "dor"
+    #    print(f" station {station} {instrument} {start_field_name} {end_field_name}")
 
-    elif instrument == 'mri' and ((station is not "Tuebingen")( station is not "Aachen")):
-        end_field_name = metadata_instrument.index[-2]
-        print(f" station {station} {instrument} {start_field_name} {end_field_name}")
-    else:
-        end_field_name = metadata_instrument.index[-1]
-        print(f" station {station} {instrument} {start_field_name} {end_field_name}")
+    #elif instrument == 'mri' and ((station is not "Tuebingen")( station is not "Aachen")):
+    #    end_field_name = metadata_instrument.index[-2]
+    #    print(f" station {station} {instrument} {start_field_name} {end_field_name}")
+    #else:
+    #    end_field_name = metadata_instrument.index[-1]
+    #    print(f" station {station} {instrument} {start_field_name} {end_field_name}")
 
 
     #if instrument == 'mri' and station is "Aachen":

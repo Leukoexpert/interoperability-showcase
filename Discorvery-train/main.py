@@ -253,32 +253,32 @@ else:
 
 # mri mask overview
 
-print("Start with the MRI section")
+#print("Start with the MRI section")
 
-print("Extract MRI information")
+#print("Extract MRI information")
 
-mri_df = get_instrument_df(redcap_data=data, redcap_metadata=metadata, instrument="mri", with_complete=True,
-                           station=station_name)
+#mri_df = get_instrument_df(redcap_data=data, redcap_metadata=metadata, instrument="mri", with_complete=True,
+#                           station=station_name)
 
-id_mri = get_record_id_to_instruments(redcap_data=data, instrument="mri")
+#id_mri = get_record_id_to_instruments(redcap_data=data, instrument="mri")
 
-if not mri_df.empty:
-    mri_df["record_id"] = list(id_mri)
+#if not mri_df.empty:
+#    mri_df["record_id"] = list(id_mri)
 
-    xnat_col = mri_df['mri_data']
-    mri_df = mri_df.loc[xnat_col.notna(), :]
+#    xnat_col = mri_df['mri_data']
+#    mri_df = mri_df.loc[xnat_col.notna(), :]
+#
+#    number_of_mri = len(mri_df['mri_complete'])
 
-    number_of_mri = len(mri_df['mri_complete'])
+#    table_visits = mri_df['record_id'].value_counts()
 
-    table_visits = mri_df['record_id'].value_counts()
+#    table_visits_count = pd.Series(table_visits).value_counts()
 
-    table_visits_count = pd.Series(table_visits).value_counts()
-
-    patients_list = list(table_visits_count)
-    number_of_visits = list(table_visits_count.index)
-    # save number_of_visits and patients_list to a csv file
-    df = pd.DataFrame({'Number of visits': number_of_visits, 'Number of patients': patients_list})
-    df.to_csv(os.path.join(image_path, 'mri_data.csv'), index=False)
+#    patients_list = list(table_visits_count)
+#    number_of_visits = list(table_visits_count.index)
+#    # save number_of_visits and patients_list to a csv file
+#    df = pd.DataFrame({'Number of visits': number_of_visits, 'Number of patients': patients_list})
+#    df.to_csv(os.path.join(image_path, 'mri_data.csv'), index=False)
     """
     mri_file_path = os.path.join(image_path, "mri_data_plot.png")
     plt.rcParams.update({'font.size': 15})
@@ -295,8 +295,8 @@ if not mri_df.empty:
                         wspace=0.01)
     plt.savefig(mri_file_path)
     """
-else:
-    print("--- No MRI data found ---")
+#else:
+#    print("--- No MRI data found ---")
 
     #mri_file_path = os.path.join(image_path, "mri_data_plot.png")
 
@@ -358,10 +358,10 @@ if not examination_df.empty:
     examination_index = list(examination_df['record_id'])
 else:
     examination_index = []
-if not mri_df.empty:
-    mri_index = list(mri_df['record_id'])
-else:
-    mri_index = []
+#if not mri_df.empty:
+#    mri_index = list(mri_df['record_id'])
+#else:
+#    mri_index = []
 if not genetic_df.empty:
     genetic_index = list(genetic_df['record_id'])
 else:
@@ -378,8 +378,8 @@ for i in range(0, len(baseline_index)):
     item = baseline_record[i]
     if item in examination_index:
         index_df.loc[i, 'has_exam'] = 'yes'
-    if item in mri_index:
-        index_df.loc[i, 'has_mri'] = 'yes'
+ #   if item in mri_index:
+ #       index_df.loc[i, 'has_mri'] = 'yes'
     if item in genetic_index:
         index_df.loc[i, 'has_genetics'] = 'yes'
 
@@ -387,7 +387,8 @@ for i in range(0, len(baseline_index)):
 # index_df.loc[[i for item in baseline_index if item in mri_index], 'has_mri'] = "yes"
 # index_df.loc[[i for item in baseline_index if item in genetic_index], 'has_genetics'] = "yes"
 
-table_masks = index_df.groupby(['has_exam', 'has_mri', 'has_genetics']).size()
+#table_masks = index_df.groupby(['has_exam', 'has_mri', 'has_genetics']).size()
+table_masks = index_df.groupby(['has_exam',  'has_genetics']).size()
 
 table_masks_reset = table_masks.reset_index()
 
@@ -395,14 +396,17 @@ number_accumulated_baseline = sum(table_masks)
 
 number_accumulated_examination = sum(table_masks[list(table_masks_reset.index[table_masks_reset["has_exam"] == "yes"])])
 
-number_accumulated_MRI = sum(table_masks[list(table_masks_reset.index[table_masks_reset["has_mri"] == "yes"])])
+#number_accumulated_MRI = sum(table_masks[list(table_masks_reset.index[table_masks_reset["has_mri"] == "yes"])])
 
 number_accumulated_genetics = sum(
     table_masks[list(table_masks_reset.index[table_masks_reset["has_genetics"] == "yes"])])
 
-table_generel = [number_accumulated_baseline, number_accumulated_examination, number_accumulated_MRI,
+#table_generel = [number_accumulated_baseline, number_accumulated_examination, number_accumulated_MRI,
+#                 number_accumulated_genetics]
+table_generel = [number_accumulated_baseline, number_accumulated_examination,
                  number_accumulated_genetics]
-table_generel_names = ['Baseline', 'Examination', 'MRI', 'Genetics']
+#table_generel_names = ['Baseline', 'Examination', 'MRI', 'Genetics']
+table_generel_names = ['Baseline', 'Examination', 'Genetics']
 # save tabel_generel to csv
 table_generel_df = pd.DataFrame(table_generel, index=table_generel_names, columns=["Number of Patients"])
 table_generel_df.to_csv(os.path.join(image_path, "overview_accumulated.csv"))
