@@ -657,8 +657,7 @@ def create_pdf(station_name, number_of_patients, number_of_mris, number_of_exami
     pdf.output(output_path)
 
 
-def get_instrument_df(redcap_data: pd.DataFrame, redcap_metadata: pd.DataFrame, instrument: str, with_complete: bool =
-True, station: str = None) -> pd.DataFrame:
+def get_instrument_df(redcap_data: pd.DataFrame, redcap_metadata: pd.DataFrame, instrument: str, with_complete: bool =True, station: str = None) -> pd.DataFrame:
     """
     This function should extract the instruments from the redcap structured dataframe
     :param with_complete: a boolean if the complete_instrument column should be included
@@ -688,12 +687,12 @@ True, station: str = None) -> pd.DataFrame:
     #    start_field_name = "dor"
     #    print(f" station {station} {instrument} {start_field_name} {end_field_name}")
 
-    #elif instrument == 'mri' and ((station is not "Tuebingen")( station is not "Aachen")):
+    #elif instrument == 'mri' and ((station is not "Tuebingen") or( station is not "Aachen")):
     #    end_field_name = metadata_instrument.index[-2]
     #    print(f" station {station} {instrument} {start_field_name} {end_field_name}")
     #else:
-    #    end_field_name = metadata_instrument.index[-1]
-    #    print(f" station {station} {instrument} {start_field_name} {end_field_name}")
+    end_field_name = metadata_instrument.index[-1]
+    print(f" station {station} {instrument} {start_field_name} {end_field_name}")
 
 
     #if instrument == 'mri' and station is "Aachen":

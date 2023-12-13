@@ -432,9 +432,9 @@ table_dict = {'nonono': 'Only Baseline', 'nonoyes': 'Baseline&Genetics', 'noyesn
                   'Baseline&Examination&Genetics', 'yesyesno': 'Baseline&Examination&MRI',
               'yesyesyes': 'Baseline&Examination&MRI&Genetics'}
 
-for row in table_masks.index:
-    selection = ''.join(row)
-    table_names.append(table_dict[selection])
+#for row in table_masks.index:
+#    selection = ''.join(row)
+#    table_names.append(table_dict[selection])
 
 overview_file_path = os.path.join(image_path, "Overview_mask.png")
 overview_file_path_pdf = os.path.join(image_path, "Overview_mask.pdf")
