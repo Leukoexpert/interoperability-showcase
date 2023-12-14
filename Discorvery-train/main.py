@@ -102,12 +102,15 @@ sex_series = sex_series.dropna()
 
 table_sex = sex_series.value_counts()
 
+table_sex.to_csv(os.path.join(image_path, 'sex_data.csv'), index=False)
+
 sex_dict = get_transformation_dict_from_answers(metadata, 'sex')
 
 table_sex.index = table_sex.index.astype(int)
 table_sex.index = [sex_dict[x] for x in table_sex.index]
 
 diagnosis_series = baseline_df["diagnosed_leuk"].dropna()
+
 
 # print(f"{diagnosis_series}")
 #number_diagnosis = len(diagnosis_series)
@@ -163,8 +166,7 @@ final_df = final_df.dropna()
 age = [final_df['date_diagnosis'][patient].year - final_df['dob'][patient].year for patient in
        final_df.index]
 
-age = [0 if i <= 0 else i for i in age]
-
+age = [num for num in age if 0 <= num <= 100]
 age_file_path = os.path.join(image_path, 'age_diagnosis_hist_plot.png')
 
 save_hist_plot(output_path=age_file_path, parameter=age, label_x="age at diagnosis", n=len(sex_series))

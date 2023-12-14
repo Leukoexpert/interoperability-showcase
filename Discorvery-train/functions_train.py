@@ -365,7 +365,9 @@ def save_hist_plot(output_path: str, parameter: list, label_x: str, n) -> None:
     :param parameter:
     :param label_x:
     """
+
     # save histogram as csv
+
     hist = np.histogram(parameter, bins=k_anyme_bins(parameter,5))
     hist_df = pd.DataFrame(list(zip(hist[1][:-1], hist[1][1:], hist[0])), columns=['left', 'right', 'count'])
     hist_df.to_csv(output_path.replace('.png', '.csv'), index=False)
