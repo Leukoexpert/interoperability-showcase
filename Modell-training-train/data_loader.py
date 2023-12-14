@@ -180,8 +180,10 @@ class DataLoader:
         """
         # the label is this column
         label = "diagnosed_leuk"
+        diff_labels = "diagnosis"
         # convert all values that are not ALD to 0
         self.data.loc[self.data[label] != 2, label] = 0
+        self.data.loc[self.data[diff_labels] == 4, label] = 0
         # convert all values that are ALD to 1
         self.data.loc[self.data[label] == 2, label] = 1
 

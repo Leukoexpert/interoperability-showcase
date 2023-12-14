@@ -1,3 +1,5 @@
+import os
+os.environ['OPENBLAS_NUM_THREADS'] = '1'
 from train import TrainConfig
 from data_loader import DataLoader
 from model_utils import split_data_into_data_target, ModelLoader, get_metrics_binary, get_auc
@@ -20,7 +22,11 @@ def main():
     train_config = TrainConfig()
 
     # 2. Load data from redcap / conteiner
-    data_loader = DataLoader(train_config)
+    if train_config.get_station_name() == "Aachen":
+        split_factor = 0
+    else:
+        split_factor = 0.8
+    data_loader = DataLoader(train_config, split_factor)
     x_train, y_train = split_data_into_data_target(data_loader.train_data, "diagnosed_leuk")
     x_test, y_test = split_data_into_data_target(data_loader.test_data, "diagnosed_leuk")
     model = Model(train_config, x_train, y_train, x_test, y_test)
