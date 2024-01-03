@@ -4,7 +4,10 @@ os.environ['OPENBLAS_NUM_THREADS'] = '1'
 import numpy as np
 import pandas as pd
 
-from functions_train import *
+from functions_train import export_to_redcap_via_pycap, export_metadata_via_pycap, load_redcap_data_from_file, \
+    load_redcap_metadata_from_file, get_instrument_df, get_record_id_to_instruments, get_transformation_dict_from_answers, \
+    convert_series_to_datetimes, save_hist_plot, k_anonym_count, transformation_dict, transformation_dict_raw_label, \
+    transformation_dict_label_short
 
 # PHT medic paths
 DATA_PATH = "/opt/train_data"
@@ -33,7 +36,6 @@ else:
     file_load_metadata = DATA_PATH + '/meta.csv'
 
 # print the environment variable for the viewing
-# print(redcap_key)
 print("Station name: " + station_name)
 
 # create folder for images

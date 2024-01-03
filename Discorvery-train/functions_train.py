@@ -1,11 +1,10 @@
 # function script for the redcap train
-import os.path
 import requests
 import pandas as pd
 import numpy as np
-#from matplotlib import pyplot as plt
+
 from redcap import Project
-from fpdf import FPDF
+
 from datetime import datetime
 
 transformation_dict = {'HTRA1-related autosomal dominant cerebral small vessel disease': 'HTRA1',
@@ -416,9 +415,6 @@ def k_anonym_count(name_list: list,count_list: list, k: int = 5) -> int:
     returns the name_list and count list with the names that have less than k elements merged into the other category
     :param name_list: list of names
     """
-    #TODO remove print statements
-    #print(name_list)
-    #print(count_list)
     #get index of names that have less than k elements
     index = [i for i, x in enumerate(count_list) if x <= k]
     #get the sum of all elements that have less than k elements
@@ -503,161 +499,6 @@ def load_redcap_data_from_file(file_path: str) -> pd.DataFrame:
     return df
 
 
-def print_pdf_line(table: pd.Series, pdf: FPDF) -> None:
-    """
-
-    :param table: results of a value_count of a series
-    :param pdf: pdf object where you print it in
-    """
-    for table_row in range(0, len(table)):
-        value = str(table[table_row])
-        name = str(table.index[table_row])
-        pdf.cell(100, 8, txt="{} \t {}".format(name, value), ln=2, align='L')
-
-
-def print_table_to_pdf(table: pd.Series, pdf: FPDF, header_included: bool, header: list) -> None:
-    """
-
-    :param header_included: is the header included in the dataframe
-    :param header: a list of header (number of columns +1)
-    :param table: results of a value_count of a series
-    :param pdf: pdf object where you print it in
-    """
-    epw = pdf.w - 2 * pdf.l_margin
-    line_height = pdf.font_size * 2.5
-    col_width = epw / 2
-    if not header_included:
-        for head in header:
-            pdf.cell(col_width, line_height, head, border=1, align='C')
-        pdf.ln(line_height)
-    for table_row in range(0, len(table)):
-        value = str(table[table_row])
-        name = str(table.index[table_row])
-        pdf.cell(col_width, line_height, name, border=1, align='C')
-        pdf.cell(col_width, line_height, value, border=1, align='C')
-        pdf.ln(line_height)
-
-
-def add_image_to_pdf(pdf, name, x, y, h, w):
-    if os.path.exists(name):
-        pdf.image(name=name, x=x, y=y, w=w, h=h)
-
-
-def create_pdf(station_name, number_of_patients, number_of_mris, number_of_examinations, number_of_genetic, table_sex,
-               table_examination,
-               number_of_diagnosis, table_diagnosis, overview_plot_path, overview_accumulated_plot_path, hist_plot_path,
-               exam_plot_path, mri_plot_path,
-               genetic_plot_path, output_path):
-    # save FPDF() class into a
-    pdf = FPDF()
-    # start the first page
-    pdf.add_page()
-    # set style for the Title
-    pdf.set_font("Arial", size=24, style='BU')
-    # create a cell
-    pdf.cell(200, 25, txt="Train Report {}".format(station_name), ln=1, align='C')
-    pdf.set_font("Arial", size=12)
-    pdf.multi_cell(180, 5, border=0, align='L', txt="This report is for the automatic generation of an overview of the "
-                                                    "structured RedCAP data at the respective locations. For the "
-                                                    "report, the 4 different masks Baseline, Examination, MRI and "
-                                                    "Genetics are extracted and an overview is generated. If you have"
-                                                    " any questions, suggestions or criticism, please contact "
-                                                    "Lars Hempel.")
-    # add another cell
-    pdf.set_font("Arial", size=16, style="U")
-    pdf.line(10, 60, 200, 60)
-    pdf.cell(100, 20, txt="Overview:", ln=2, align='L')
-    pdf.set_font("Arial", size=15)
-    pdf.multi_cell(180, 7, border=0, align='L', txt="The overview is done on all questionnaires of the patients. A "
-                                                    "baseline questionnaire is created for each patient and the "
-                                                    "questionnaires for examination, MRI or genetics can be filled "
-                                                    "in. MRI and Examination are longitudinale therefeore multiple filled out."
-                                                    " The next graph shows the combination of all questionnaires.")
-    pdf.cell(100, 8, txt="Number of Patients: {}".format(number_of_patients), ln=2, align='L')
-    add_image_to_pdf(pdf=pdf, name=overview_accumulated_plot_path, x=10, y=125, w=200, h=200)
-    pdf.add_page()
-    pdf.multi_cell(180, 7, border=0, align='L', txt="In this plot, all combinations of the different questionnaires "
-                                                    "are displayed. It is only counted whether a questionnaire is "
-                                                    "present and not how many are present. Thus, the sum of all "
-                                                    "baseline questionnaires equals the number of patients and the "
-                                                    "sum of the MRI questionnaires equals the total number of "
-                                                    "patients with at least one MRI questionnaire.")
-    add_image_to_pdf(pdf, name=overview_plot_path, x=10, y=80, w=200, h=200)
-    pdf.add_page()
-
-    # create chapter examination
-    pdf.set_font("Arial", size=20, style="U")
-    pdf.cell(100, 20, txt="Chapter: Examination", ln=1, align='L')
-    pdf.set_font("Arial", size=15)
-    pdf.multi_cell(180, 7, border=0, align='L', txt="The examination questionnaire contains the phenotypic information "
-                                                    "about the patient and can be filled out at each visit. Therefore "
-                                                    "representing longitudinal information. Only the number of "
-                                                    "follow-ups and the number of questionnaires per patient are "
-                                                    "examined.")
-    pdf.set_font("Arial", size=15)
-    pdf.cell(100, 15, txt="Number of Examination questionnaires: {}".format(number_of_mris), ln=2, align='L')
-    pdf.set_font("Arial", size=16, style="U")
-    pdf.cell(100, 15, txt="Follow Up", ln=1, align='L')
-    pdf.set_font("Arial", size=15)
-    add_image_to_pdf(pdf, exam_plot_path, x=0, y=140, w=200, h=150)
-    pdf.add_page()
-
-    # create chapter Baseline
-    pdf.set_font("Arial", size=20, style="U")
-    pdf.cell(100, 20, txt="Chapter: Baseline", ln=1, align='L')
-    pdf.set_font("Arial", size=15)
-    pdf.multi_cell(180, 7, border=0, align='L', txt="The baseline questionnaires contain basic data about the "
-                                                    "patient. The categories examined are gender, age at diagnosis "
-                                                    "and the diagnoses represented.")
-    pdf.set_font("Arial", size=16, style="U")
-    pdf.cell(100, 15, txt="Sex", ln=1, align='L')
-    pdf.set_font("Arial", size=15)
-    print_table_to_pdf(table=table_sex, pdf=pdf, header_included=False, header=["Sex", "Number"])
-    pdf.set_font("Arial", size=16, style="U")
-    pdf.cell(100, 15, txt="Age", ln=1, align='L')
-    add_image_to_pdf(pdf, name=hist_plot_path, x=0, y=120, w=200, h=150)
-    pdf.add_page()
-    pdf.set_font("Arial", size=16, style="U")
-    pdf.cell(100, 15, txt="Diagnoses", ln=1, align='L')
-    pdf.set_font("Arial", size=15)
-    pdf.cell(100, 20, txt="Number of Diagnoses: {}".format(number_of_diagnosis), ln=2, align='L')
-    #print_table_to_pdf(table=table_diagnosis, pdf=pdf, header_included=False,
-    #                   header=["Name Diagnoses", "Number of Diagnoses"])
-    pdf.add_page()
-
-    # create chapter MRI
-    pdf.set_font("Arial", size=20, style="U")
-    pdf.cell(100, 20, txt="Chapter: MRI", ln=1, align='L')
-    pdf.set_font("Arial", size=15)
-    pdf.multi_cell(180, 7, border=0, align='L', txt="The MRI questionnaire contains information on the patients "
-                                                    "radiological data image processing about the patient and can be "
-                                                    "filled out t every visit The data points to the respective files "
-                                                    "in the database for the MRI images. Only the number of follow "
-                                                    "ups, i.e. the number of questionnaires per patient, is examined.")
-    pdf.set_font("Arial", size=15)
-    pdf.cell(100, 15, txt="Number of MRIs questionnaires: {}".format(number_of_mris), ln=2, align='L')
-    pdf.set_font("Arial", size=16, style="U")
-    pdf.cell(100, 15, txt="Follow Up", ln=1, align='L')
-    add_image_to_pdf(pdf, name=mri_plot_path, x=0, y=90, w=200, h=150)
-    pdf.add_page()
-
-    # create chapter genetics
-    pdf.set_font("Arial", size=20, style="U")
-    pdf.cell(100, 20, txt="Chapter: Genetics", ln=1, align='L')
-    pdf.set_font("Arial", size=15)
-    pdf.multi_cell(180, 7, border=0, align='L', txt="The genetic questionnaire contains the genetic characteristics "
-                                                    "of a patient and are only filled out once. The data indicate "
-                                                    "provides information about the classification and used "
-                                                    "diagnostics. In this chapter, we describe the genetic findings "
-                                                    "listed.")
-    pdf.set_font("Arial", size=15)
-    pdf.cell(100, 15, txt="Number of Genetic questionnaires: {}".format(number_of_genetic), ln=2, align='L')
-    pdf.set_font("Arial", size=16, style="U")
-    pdf.cell(100, 15, txt="Findings", ln=1, align='L')
-    add_image_to_pdf(pdf, name=genetic_plot_path, x=0, y=90, w=200, h=150)
-    # save the pdf
-    pdf.output(output_path)
-
 
 def get_instrument_df(redcap_data: pd.DataFrame, redcap_metadata: pd.DataFrame, instrument: str, with_complete: bool =True, station: str = None) -> pd.DataFrame:
     """
@@ -684,26 +525,10 @@ def get_instrument_df(redcap_data: pd.DataFrame, redcap_metadata: pd.DataFrame, 
     else:
         redcap_event_name = "basic_data_consent"
 
-    #if instrument == 'mri' and ((station is "Tuebingen") or (station is "Aachen")):
-    #    end_field_name = metadata_instrument.index[-2]
-    #    start_field_name = "dor"
-    #    print(f" station {station} {instrument} {start_field_name} {end_field_name}")
 
-    #elif instrument == 'mri' and ((station is not "Tuebingen") or( station is not "Aachen")):
-    #    end_field_name = metadata_instrument.index[-2]
-    #    print(f" station {station} {instrument} {start_field_name} {end_field_name}")
-    #else:
     end_field_name = metadata_instrument.index[-1]
     print(f" station {station} {instrument} {start_field_name} {end_field_name}")
 
-
-    #if instrument == 'mri' and station is "Aachen":
-    #    end_field_name = metadata_instrument.index[-2]
-    #    start_field_name = metadata_instrument.index[1]
-    #elif instrument == 'mri' and station is not "Aachen":
-    #    end_field_name = metadata_instrument.index[-2]
-    #else:
-    #    end_field_name = metadata_instrument.index[-1]
 
 
     rows = redcap_data["redcap_repeat_instrument"] == redcap_event_name
