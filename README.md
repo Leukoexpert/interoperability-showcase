@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/794886713.svg)](https://zenodo.org/doi/10.5281/zenodo.11101320)
+
 # Interoperability-showcase
 The Discovery Train is a Python-based PHT Train which has been developed to provide an overview of the available data for the Leuko-Expert project at the Leipzig, Aachen, and Tübingen PHT stations. The script generates tables that display the sex distribution, age distribution, diagnosis distribution, and number of visits while ensuring k-Anonymity of 5.
 
